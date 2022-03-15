@@ -1,0 +1,14 @@
+
+query Query {
+  episodes {
+    info {
+      count
+    }
+    results {
+      id
+      name
+      air_date
+      episode
+    }
+  }
+}

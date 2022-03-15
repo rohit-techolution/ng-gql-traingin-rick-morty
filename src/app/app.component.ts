@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {map} from 'rxjs/operators';
+import {Episodes, QueryGQL} from "./graphql";
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ng-gql-angular-training';
+  episodes : Episodes
+  constructor(queryGQL: QueryGQL) {
+    queryGQL.watch().valueChanges.pipe(
+      map(result => result.data.episodes as Episodes)
+    ).subscribe(result => {
+      this.episodes = result;
+
+    })
+  }
 }
