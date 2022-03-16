@@ -202,22 +202,27 @@ export type QueryLocationsByIdsArgs = {
   ids: Array<Scalars['ID']>;
 };
 
-export type QueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type EpisodeQueryVariables = Exact<{
+  page?: InputMaybe<Scalars['Int']>;
+}>;
 
 
-export type QueryQuery = { __typename?: 'Query', episodes?: { __typename?: 'Episodes', info?: { __typename?: 'Info', count?: number | null } | null, results?: Array<{ __typename?: 'Episode', id?: string | null, name?: string | null, air_date?: string | null, episode?: string | null } | null> | null } | null };
+export type EpisodeQuery = { __typename?: 'Query', episodes?: { __typename?: 'Episodes', info?: { __typename?: 'Info', prev?: number | null, pages?: number | null, next?: number | null, count?: number | null } | null, results?: Array<{ __typename?: 'Episode', name?: string | null, id?: string | null, episode?: string | null, air_date?: string | null } | null> | null } | null };
 
-export const QueryDocument = gql`
-    query Query {
-  episodes {
+export const EpisodeDocument = gql`
+    query Episode($page: Int) {
+  episodes(page: $page) {
     info {
+      prev
+      pages
+      next
       count
     }
     results {
-      id
       name
-      air_date
+      id
       episode
+      air_date
     }
   }
 }
@@ -226,8 +231,8 @@ export const QueryDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class QueryGQL extends Apollo.Query<QueryQuery, QueryQueryVariables> {
-    override document = QueryDocument;
+  export class EpisodeGQL extends Apollo.Query<EpisodeQuery, EpisodeQueryVariables> {
+    override document = EpisodeDocument;
 
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
